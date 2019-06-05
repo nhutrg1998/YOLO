@@ -1,32 +1,34 @@
 import os
 import subprocess
+import shlex
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/', methods = ['POST'])
+@app.route('/', methods = ['GET', 'POST'])
 def index():
     return render_template('index.html')
 
 @app.route('/result', methods = ['GET', 'POST'])
 def solve(): 
     target = os.path.dirname(os.path.abspath(__file__))
-    res = '/'.join([target, 'static', 'output.jpg'])
-    print(res)
-    if os.path.exists(res):
-        os.remove(res)
+    static = '/'.join([target, 'static'])
 
     file = request.files['file']
-    extension = file.filename.split('.')[1]
-    destination = '/'.join([target, '.'.join(['input', extension])])
-    file.save(destination)
+    filename = file.filename.split('.')[0]
+    input_file = '/'.join([target, file.filename])
+    file.save(input_file)
 
-    subprocess.call(['./shell.sh'])
+    for file in os.listdir(static):
+        os.unlink('/'.join([static, file]))
 
-    while not os.path.isfile(res):
+    output_file = '/'.join([static, '.'.join([filename, 'jpg'])])
+    subprocess.call(shlex.split('./shell.sh {} {}'.format(input_file, output_file)))
+
+    while len(os.listdir(static)) == 0:
         pass
 
-    return render_template('result.html', detected_image = "../static/output.jpg")
+    return render_template('result.html', detected_image = '/'.join(['../static', '.'.join([filename, 'jpg'])]))
 
 if __name__ == "__main__":  
     app.run(debug=True)
