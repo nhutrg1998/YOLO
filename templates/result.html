@@ -4,8 +4,12 @@
     <title>Upload</title>
 </head>
 <body>
-    <p>Đã nhận được ảnh. Chờ chút sẽ thấy kết quả phía dưới.</p>
-    <img src="{{ detected_image }}" alt="result" >
-    <button onclick="{{ url_for('index') }}">Quay lại</button>
+    <p>Kết quả: </p>
+    <div><img src="{{ detected_image }}" alt="result" ></div>
+    <div>
+        <form action="{{ url_for('index') }}" method="POST" enctype = "multipart/form-data">
+            <input type="submit" value="Quay lại">
+        </form>
+    </div>
 </body>
 </html>

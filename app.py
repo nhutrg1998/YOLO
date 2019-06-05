@@ -4,11 +4,11 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods = ['POST'])
 def index():
     return render_template('index.html')
 
-@app.route('/result', methods=['GET', 'POST'])
+@app.route('/result', methods = ['GET', 'POST'])
 def solve(): 
     target = os.path.dirname(os.path.abspath(__file__))
     res = '/'.join([target, 'static', 'output.jpg'])
