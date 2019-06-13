@@ -1,5 +1,0 @@
-classes= 10 
-train  = ./Dataset/train.txt
-valid  = ./Dataset/test.txt
-names = data/mnist.names  
-backup = backup

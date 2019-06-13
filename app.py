@@ -1,12 +1,13 @@
 import os
 import subprocess
 import shlex
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
+    print()
     return render_template('index.html')
 
 @app.route('/result', methods = ['GET', 'POST'])
@@ -28,7 +29,8 @@ def solve():
     while len(os.listdir(static)) == 0:
         pass
 
-    return render_template('result.html', detected_image = '/'.join(['../static', '.'.join([filename, 'jpg'])]))
+    result_image = '/'.join(['../static', '.'.join([filename, 'jpg'])])
+    return render_template('result.html', detected_image = result_image)
 
 if __name__ == "__main__":  
     app.run(debug=True)
