@@ -24,10 +24,13 @@ def solve():
         os.unlink('/'.join([static, file]))
 
     output_file = '/'.join([static, '.'.join([filename, 'jpg'])])
+
     subprocess.call(shlex.split('./shell.sh {} {}'.format(input_file, output_file)))
 
     while len(os.listdir(static)) == 0:
         pass
+
+    os.unlink(input_file)
 
     result_image = '/'.join(['../static', '.'.join([filename, 'jpg'])])
     return render_template('result.html', detected_image = result_image)
